@@ -1,5 +1,4 @@
-console.log('Hola ya me pueden ver');
+// Estilos propios
+import './assets/css/index.css';
 
-//traer ejemplos
-// Scope, context
-// Variables por referencia y por valor
+console.log('Hola ya me pueden ver');
