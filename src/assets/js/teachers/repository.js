@@ -1,0 +1,1 @@
+// Se va a encargar de CRUD con los datos en el storage (guardar, actualizar, leer, eliminar)
