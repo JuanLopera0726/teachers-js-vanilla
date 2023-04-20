@@ -3,6 +3,7 @@
 /**
  *  Este objeto contiene las referencias a los elementos clave del formulario
  */
+// Son los elementos del formulario
 export const formElements = {
     form: document.getElementById('teacherForm'),
     fields: {
@@ -13,7 +14,16 @@ export const formElements = {
     }
 };
 
+
+// (get) => Es el valor de los elementos del formulario para ./operations
 export function getFormData() {
+
+    /**
+     * Forma para obtener datos que no voy a enviar al servidor = trabaja solo si no esta "name"
+     *const formData = new FormData(formElements.form);
+     *return Object.fromEntries(formData.entries());
+     */
+
     const teacher = {
         name: formElements.fields.name.value,
         description: formElements.fields.description.value,

@@ -3,16 +3,22 @@
 // setItem me permite crear una key en el localStorage
 // localStorage.setItem('teachers', 'Hola base de datos estudiantes');
 
-// setItem me permite buscar una llave
+// getItem me permite buscar una llave
 // const teachers = localStorage.getItem('teachers');
 
-// setItem me permite eliminar en el localStorage
+// removeItem me permite eliminar en el localStorage
 // localStorage.removeItem('teachers');
 
-export function getDatabase() {
-    return localStorage.getItem('db_teachers');
+export function getDatabase(dbName) {
+    // convertimos un str en un json(objeto)
+    const database = JSON.parse(localStorage.getItem(dbName));
+
+    return database === null ? [] : database;
 }
 
-export function setDatabase(teachers) {
-    localStorage.setItem('db_teachers', teachers);
+export function setDatabase(dbName, jsonData) {
+    // convertimos un json en un str
+    localStorage.setItem(dbName, JSON.stringify(jsonData));
 }
+
+
