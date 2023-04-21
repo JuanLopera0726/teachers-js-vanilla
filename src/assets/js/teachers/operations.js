@@ -1,7 +1,9 @@
 // Encargado de la interacción de js con html
 // window todo lo que pasa en la pagina
 
-import { formElements, getFormData } from "./form";
+import alertify from "alertifyjs";
+
+import { formElements, getFormData, resetForm } from "./form";
 import { createTeacher, readTeachers }   from './repository';
 
 // Aquí van a estar los listeners de la pag (así como el "listenFormSubmitEvent" que escucha el submit)
@@ -21,6 +23,8 @@ function listenFormSubmitEvent() {
     formElements.form.addEventListener('submit', (event) => {
         event.preventDefault();
         createTeacher(getFormData());
+        resetForm();
+        alertify.success('Profesor guardado correctamente');
         listTeachers();
     });
 }
