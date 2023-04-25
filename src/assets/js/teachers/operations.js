@@ -1,10 +1,16 @@
 // Encargado de la interacción de js con html
 // window todo lo que pasa en la pagina
 
+// Third libraries
 import alertify from "alertifyjs";
 
-import { formElements, getFormData, resetForm } from "./form";
+// Own libraries  (utils)
+import { validateForm } from './../utils/validations';
+
+// Module libraries (en este caso modulo de teachers)
+import { formElements, fieldConfigurations, getFormData, resetForm } from "./form";
 import { createTeacher, readTeachers }   from './repository';
+
 
 // Aquí van a estar los listeners de la pag (así como el "listenFormSubmitEvent" que escucha el submit)
 export function listeners() {
@@ -22,10 +28,17 @@ export function listeners() {
 function listenFormSubmitEvent() {
     formElements.form.addEventListener('submit', (event) => {
         event.preventDefault();
-        createTeacher(getFormData());
-        resetForm();
-        alertify.success('Profesor guardado correctamente');
-        listTeachers();
+        
+        if (validateForm(fieldConfigurations)) {
+            createTeacher(getFormData());
+            resetForm();
+            alertify.success('Profesor guardado correctamente');
+            listTeachers(); 
+        } else {
+            alertify.error('Verificar los datos del formulario')
+        }
+
+        
     });
 }
 
@@ -50,7 +63,7 @@ function listTeachers() {
             // Creo las columnas 
             const  colId = document.createElement('td');
             colId.textContent = id;
-            colId.classList.add('text-center')
+            colId.classList.add('text-center');
 
             const  colName = document.createElement('td');
             colName.textContent = name;
@@ -90,13 +103,8 @@ function listTeachers() {
 
 
             // Agrego las columnas a la filas
-            row.appendChild(colId);
-            row.appendChild(colName);
-            row.appendChild(colDescription);
-            row.appendChild(colEmail);
-            row.appendChild(colBirthDate);
-            row.appendChild(colButtons);
-            
+            row.append(colId, colName, colDescription, colEmail, colBirthDate, colButtons);
+
             // Agrego la fila al tbody
             tbody.appendChild(row);
             
