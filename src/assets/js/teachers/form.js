@@ -50,7 +50,7 @@ export const fieldConfigurations = [
         validations: [
             {
                 errorId: `${formElements.fields.email.id}Required`,
-                errorMessage: 'El email es obligatorio.',
+                errorMessage: 'El correo electrónico es obligatorio.',
                 validationFunction: (value) => {
                     return value.trim() !== '';     
                 }
@@ -70,7 +70,6 @@ export const fieldConfigurations = [
         ]
     }
 ];
-
 
 // (get) => Es el valor de los elementos del formulario para ./operations
 export function getFormData() {
