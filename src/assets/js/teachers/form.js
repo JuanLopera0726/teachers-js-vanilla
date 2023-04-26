@@ -23,6 +23,7 @@ export const fieldConfigurations = [
         input: formElements.fields.name,
         validations: [
             {
+                // Template literals
                 errorId: `${formElements.fields.name.id}Required`,
                 errorMessage: 'El nombre es obligatorio.',
                 // Las validaciones retornarán un false cuando debe mostrar el mensaje de error 
@@ -54,6 +55,14 @@ export const fieldConfigurations = [
                 validationFunction: (value) => {
                     return value.trim() !== '';     
                 }
+            },
+            {
+                errorId: `${formElements.fields.description.id}Pattern`,
+                errorMessage:'El correo electrónico no cumple con el formato correcto.',
+                validationFunction: (value) => {
+                    return /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value);
+                }
+
             }
         ]
     },

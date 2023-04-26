@@ -8,6 +8,12 @@ export function createEmptyRow(colspan, message) {
     return rowEmpty;
 }
 
+export function createTableCol(className, textContent) {
+    const tableData = document.createElement(className);
+    tableData.textContent = textContent;
+    return tableData
+}
+
 
 export function createActionButton({ buttonClass, buttonClassIdentifier, title, icon, dataId }) {
     const actionButton = document.createElement('button');

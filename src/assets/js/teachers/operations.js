@@ -6,7 +6,7 @@ import alertify from "alertifyjs";
 
 // Own libraries  (utils)
 import { validateForm, validateField, removeInputErrorMessage, removeErrorClassNameFields, removeErrorMessageElements } from './../utils/validations';
-import { createEmptyRow, createActionButton } from './../utils/table';
+import { createEmptyRow, createActionButton, createTableCol } from './../utils/table';
 
 
 // Module libraries (en este caso modulo de teachers)
@@ -66,23 +66,13 @@ function listTeachers() {
             row.classList.add('align-middle');
 
             // Creo las columnas 
-            const colId = document.createElement('td');
-            colId.textContent = id;
+            const colId = createTableCol('td', id);
             colId.classList.add('text-center');
-
-            const colName = document.createElement('td');
-            colName.textContent = name;
-
-            const colDescription = document.createElement('td');
-            colDescription.textContent = description;
-
-            const colEmail = document.createElement('td');
-            colEmail.textContent = email;
-
-            const colBirthDate = document.createElement('td');
-            colBirthDate.textContent = birthDate;
-
-            const colButtons = document.createElement('td');
+            const colName = createTableCol('td', name);
+            const colDescription = createTableCol('td', description);
+            const colEmail = createTableCol('td', email);
+            const colBirthDate = createTableCol('td', birthDate);
+            const colButtons = createTableCol('td');
             colButtons.classList.add('text-center');
 
             const editButton = createActionButton({

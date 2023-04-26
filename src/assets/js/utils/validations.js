@@ -44,11 +44,8 @@ function createErrorMessageElement(errorId, errorMessage) {
     return errorMessageElement;
 
 }
-/**
- * 
- * 
- * 
- */
+
+
 export function removeErrorMessageElements() {
     const errorMessageElements = document.querySelectorAll('.invalid-feedback');
     errorMessageElements.forEach((element) => {
