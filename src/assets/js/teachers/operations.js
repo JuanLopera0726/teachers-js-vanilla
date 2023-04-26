@@ -5,11 +5,13 @@
 import alertify from "alertifyjs";
 
 // Own libraries  (utils)
-import { validateForm } from './../utils/validations';
+import { validateForm, validateField, removeInputErrorMessage } from './../utils/validations';
+import { createEmptyRow, createActionButton } from './../utils/table';
+
 
 // Module libraries (en este caso modulo de teachers)
 import { formElements, fieldConfigurations, getFormData, resetForm } from "./form";
-import { createTeacher, readTeachers }   from './repository';
+import { createTeacher, readTeachers } from './repository';
 
 
 // Aquí van a estar los listeners de la pag (así como el "listenFormSubmitEvent" que escucha el submit)
@@ -17,7 +19,8 @@ export function listeners() {
     window.addEventListener('load', () => {
         listenFormSubmitEvent();
         listTeachers();
-        
+        listenFormFieldsChangeEvent();
+
     });
 
 
@@ -28,17 +31,17 @@ export function listeners() {
 function listenFormSubmitEvent() {
     formElements.form.addEventListener('submit', (event) => {
         event.preventDefault();
-        
+        alertify.dismissAll();
         if (validateForm(fieldConfigurations)) {
             createTeacher(getFormData());
             resetForm();
             alertify.success('Profesor guardado correctamente');
-            listTeachers(); 
+            listTeachers();
         } else {
             alertify.error('Verificar los datos del formulario')
         }
 
-        
+
     });
 }
 
@@ -47,81 +50,76 @@ function listTeachers() {
     const tbody = document.querySelector('#tblTeachers tbody');
     tbody.innerHTML = '';
 
-    if ( arrayTeachers.length > 0 ){
+    if (arrayTeachers.length > 0) {
 
 
         // Retorna cada objeto y cada posición del objeto (forEach)
-        arrayTeachers.forEach( (teacher) => { 
+        arrayTeachers.forEach((teacher) => {
 
             // destructuración es convertir un objeto en variables != (...)
-            const {id, name, description, email, birthDate} = teacher;
+            const { id, name, description, email, birthDate } = teacher;
 
             // Creo la fila
             const row = document.createElement('tr');
             row.classList.add('align-middle');
 
             // Creo las columnas 
-            const  colId = document.createElement('td');
+            const colId = document.createElement('td');
             colId.textContent = id;
             colId.classList.add('text-center');
 
-            const  colName = document.createElement('td');
+            const colName = document.createElement('td');
             colName.textContent = name;
 
-            const  colDescription = document.createElement('td');
+            const colDescription = document.createElement('td');
             colDescription.textContent = description;
 
-            const  colEmail = document.createElement('td');
+            const colEmail = document.createElement('td');
             colEmail.textContent = email;
 
-            const  colBirthDate = document.createElement('td');
-            colBirthDate.textContent = birthDate; 
+            const colBirthDate = document.createElement('td');
+            colBirthDate.textContent = birthDate;
 
-            const  colButtons = document.createElement('td');
+            const colButtons = document.createElement('td');
             colButtons.classList.add('text-center');
-            
-            const editButton = document.createElement('button');
-            editButton.classList.add('btn', 'btn-primary', 'btn-edit', 'm-1');
-            editButton.dataset.id = id;
-            editButton.setAttribute('title', 'Editar');
 
-            const editIcon = document.createElement('em');
-            editIcon.classList.add('fa', 'fa-edit');
-            editButton.appendChild(editIcon);
+            const editButton = createActionButton({
+                buttonClass: 'btn-primary',
+                buttonClassIdentifier: 'btn-edit',
+                title: 'Editar',
+                icon: 'fa-edit',
+                dataId: id
+            });
 
-            const deleteButton = document.createElement('button');
-            deleteButton.classList.add('btn', 'btn-danger', 'btn-delete', 'm-1');
-            deleteButton.dataset.id = id;
-            deleteButton.setAttribute('title', 'Eliminar');
-
-            const trashIcon = document.createElement('em');
-            trashIcon.classList.add('fa-solid', 'fa-trash-can');
-            deleteButton.appendChild(trashIcon);
-
+            const deleteButton = createActionButton({
+                buttonClass: 'btn-danger',
+                buttonClassIdentifier: 'btn-delete',
+                title: 'Eliminar',
+                icon: 'fa-trash',
+                dataId: id
+            });
             colButtons.appendChild(editButton);
             colButtons.appendChild(deleteButton);
-
-
             // Agrego las columnas a la filas
             row.append(colId, colName, colDescription, colEmail, colBirthDate, colButtons);
-
             // Agrego la fila al tbody
             tbody.appendChild(row);
-            
-
         });
 
     } else {
-
-        const rowEmpty = document.createElement('tr');
-        const colEmpty = document.createElement('td');
-        colEmpty.setAttribute('colSpan', '6');
-        colEmpty.textContent = "No se encuentran registros disponibles";
-        colEmpty.classList.add('text-center');
-        rowEmpty.appendChild(colEmpty);
-
+        const rowEmpty = createEmptyRow(6, "No se encuentran registros disponibles");
         tbody.appendChild(rowEmpty);
+    }
+}
 
-    } 
+function listenFormFieldsChangeEvent() {
+    fieldConfigurations.forEach(({ input, validations }) => {
+        input.addEventListener('change', () => {
+            removeInputErrorMessage(input);
+            validations.forEach((validationConfig) => {
+                validateField(input, validationConfig);
+            });
+        })
 
+    });
 }

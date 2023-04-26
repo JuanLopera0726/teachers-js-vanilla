@@ -2,25 +2,19 @@
 
 export function validateForm(fieldConfigurations) {
     let isValid = true;
-
+    removeErrorMessageElements();
     fieldConfigurations.forEach((fieldConfig) => {
-
         fieldConfig.validations.forEach((validationConfig) => {
-
             const currentFieldIsValid = validateField(fieldConfig.input, validationConfig);
             // todos tienen que dar en true 
             isValid = isValid && currentFieldIsValid;
         });
-
-
     });
-
     return isValid;
 
 }
 
-function validateField(input, validationConfig) {
-
+export function validateField(input, validationConfig) {
     const { errorId, errorMessage, validationFunction } = validationConfig;
     const fieldIsValid = validationFunction(input.value);
     // if (fieldIsValid === false)
@@ -50,11 +44,26 @@ function createErrorMessageElement(errorId, errorMessage) {
     return errorMessageElement;
 
 }
-
+/**
+ * 
+ * 
+ * 
+ */
 function removeErrorMessageElements() {
 
+    const errorMessageElements = document.querySelectorAll('.invalid-feedback');
+    errorMessageElements.forEach((element) => {
+        element.remove();
+    });
+
+    const inputs = document.querySelectorAll('.form-control');
+    inputs.forEach((input) => {
+        input.classList.remove('is-invalid');
+    });
 }
 
-function removeInputErrorMessage(input) {
+export function removeInputErrorMessage(input) {
+    
+    let errorMessageElement = input.nextElementSibling;
 
 }
