@@ -62,7 +62,6 @@ export const fieldConfigurations = [
                 validationFunction: (value) => {
                     return /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value);
                 }
-
             }
         ]
     },
@@ -88,7 +87,6 @@ export function getFormData() {
      *const formData = new FormData(formElements.form);
      *return Object.fromEntries(formData.entries());
      */
-
     const teacher = {
         id: new Date().getTime(), 
         name: formElements.fields.name.value,
@@ -102,4 +100,12 @@ export function getFormData() {
 
 export function resetForm() {
     formElements.form.reset();
+}
+
+export function setFormData(teacher) {
+    const { id, name, description, email, birthDate } = teacher;
+    formElements.fields.name.value = name
+    formElements.fields.description.value = description
+    formElements.fields.email.value = email
+    formElements.fields.birthDate.value = birthDate
 }
